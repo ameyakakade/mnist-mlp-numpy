@@ -1,9 +1,15 @@
 # MNIST digit recognizer using Multilayer Perceptron in NumPy
-Raw implementation of a multilayer perceptron from scratch that classifies digits in the MNIST dataset.
-Digits are handwritten 28×28, 8-bit grayscale images. The network predicts the digit class (0–9) for each image.
+![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)
+![NumPy](https://img.shields.io/badge/NumPy-required-orange)
+![Python](https://img.shields.io/badge/Python-3.9+-blue)
 
+A from-scratch NumPy implementation of a multilayer perceptron trained on MNIST, built to understand backpropagation at the mathematical level.
+
+__Accuracy: ~93% on the MNIST test set__
+
+### Why This Exists
 The neural network is trained using backpropagation and batch gradient descent, without relying on high-level frameworks that hide the math.
-TensorFlow is used only to load the MNIST database. 
+TensorFlow is used only to load the MNIST dataset. Code is written to maximize readability over performance.
 
 [This](https://www.youtube.com/playlist?list=PLZHQObOWTQDNU6R1_67000Dx_ZCJB-3pi) series by 3b1b on neural networks was inspiration for this project.
 
@@ -12,7 +18,14 @@ TensorFlow is used only to load the MNIST database.
 | ------ | ----------------------------------- |
 | Input  | 784 neurons (28×28 flattened image)|
 | Hidden | 3 hidden layers, 20 neurons each|
-| Output | 10 neurons, output values from 0-1 |
+| Output | 10 neurons, output values in range [0,1] |
+
+### Screenshots
+Sample digit prediction and confusion matrix after training.
+
+<img width="376" height="330" alt="Screenshot 2026-01-03 at 9 33 48 PM" src="https://github.com/user-attachments/assets/5dfe4f7e-1fe8-4420-ae3a-5a06d8e9210f" />
+<img width="393" height="421" alt="Screenshot 2026-01-03 at 9 34 54 PM" src="https://github.com/user-attachments/assets/cccd9309-dfe7-4535-aa63-26fb5f48bcae" />
+
 
 ### Usage
 Make a virtual environment and install requirements given in requirements.txt
@@ -27,10 +40,13 @@ After training, run `usage.py`. This can be used to find accuracy, confusion mat
 ### The math
 Weights and biases are randomly initialised.
 The sigmoid function is used as the activation function for all layers.
-Data from MNIST database is loaded as NumPy arrays, flattened and normalised.
+Data from MNIST database is loaded as NumPy arrays, flattened and normalized.
 Cost is calculated using Mean Squared Error (MSE).
 
+### Limitations
+- Uses sigmoid instead of ReLU.
+- Uses MSE instead of cross-entropy
+- Not optimized for performance
 
-Code is written to maximize readability over performance.
 For notes on the calculus (derivatives, chain rule, and cost functions) used in this project, please refer to the docs/ folder.
 #### Make sure to use a LaTeX compatible viewer (like obsidian or VS Code).
