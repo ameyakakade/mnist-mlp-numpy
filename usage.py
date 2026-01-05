@@ -3,6 +3,76 @@ from tensorflow.keras.datasets import mnist # type: ignore # Using Keras just to
 # matplotlib for visualization
 import matplotlib.pyplot as plt
 import random
+import cv2
+
+
+def openCamera(factor):
+
+    # Open the default camera (0 = built-in webcam)
+    cap = cv2.VideoCapture(0)
+
+    if not cap.isOpened():
+        raise RuntimeError("Could not open camera")
+
+    while True:
+        # Read a frame from the camera
+        ret, frame = cap.read()
+        if not ret:
+            break
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        
+        # get height and width
+        h, w = gray.shape
+        # define the size of the square
+        size = min(h, w)//factor
+        y1 = h//2-size//factor
+        x1 = w//2-size//factor
+        # crop the image to a square
+        roi = gray[y1:y1+size, x1:x1+size]
+
+        # resize the image
+        roi = cv2.resize(roi, (28,28))
+        # invert image
+        roi = cv2.bitwise_not(roi)
+        roi_min = np.min(roi)
+        roi_max = np.max(roi)
+        
+        roi = (roi - roi_min)/(roi_max - roi_min)
+        
+        display = roi
+
+        # reshaping for input 
+        final = roi.reshape(-1, 784)
+
+        output = feedForward(final)
+        prediction = np.argmax(output[4])
+        confidence = np.max(output[4])
+
+        threshold = 0.58
+        if(confidence<=threshold):
+            res = "No number detected"
+        else:
+            res = f"Prediction: {prediction} Confidence:{confidence}"
+        
+        cv2.rectangle(frame, (x1, y1), (x1+size, y1+size), (0,255,0), 2)
+        cv2.putText(frame, res, (40, 80), cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,0), 5)
+
+        cv2.imshow("MNIST Camera", frame)
+        cv2.imshow("input for nn", display)
+
+        # Press 'q' to quit
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    # Release resources
+    cap.release()
+    cv2.destroyAllWindows()
+
+
+
+
+
 
 def sigmoid(z):
     z = np.clip(z, -500, 500) 
@@ -110,7 +180,7 @@ x_train_flat=x_train_flat.astype('float32') / 255.0
 load_model()
 
 while(True):
-    print(" Press 1 to calculate acuuracy \n Press 2 to get a random image and predict its digit \n Press 3 to get the confusion matrix")
+    print(" Press 1 to calculate accuracy \n Press 2 to get a random image and predict its digit \n Press 3 to get the confusion matrix \n Press 4 to open camera")
     choose = int(input())
     if(choose==1):
         print(accuracy(x_test_flat, y_test))
@@ -118,6 +188,10 @@ while(True):
         testrandomimage(x_test_flat, y_test)
     elif(choose==3):
         plot_confusion_matrix(confusion(x_test_flat, y_test))
+    elif(choose==4):
+        print("Enter crop factor")
+        inp = int(input())
+        openCamera(inp)
     else:
         print("Invalid choice \n Try again")
             
