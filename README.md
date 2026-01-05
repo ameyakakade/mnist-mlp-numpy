@@ -20,12 +20,16 @@ TensorFlow is used only to load the MNIST dataset. Code is written to maximize r
 | Hidden | 3 hidden layers, 20 neurons each|
 | Output | 10 neurons, output values in range [0,1] |
 
-### Screenshots
-Sample digit prediction and confusion matrix after training.
+<details>
+<summary><h2>Screenshots</h2></summary>
+<p>Sample digit prediction and confusion matrix after training.</p>
+
 
 <img width="376" height="330" alt="Screenshot 2026-01-03 at 9 33 48 PM" src="https://github.com/user-attachments/assets/5dfe4f7e-1fe8-4420-ae3a-5a06d8e9210f" />
 <img width="393" height="421" alt="Screenshot 2026-01-03 at 9 34 54 PM" src="https://github.com/user-attachments/assets/cccd9309-dfe7-4535-aa63-26fb5f48bcae" />
 
+![IMAGE 2026-01-05 22:17:41](https://github.com/user-attachments/assets/d8967e4a-5e33-40f1-8c8c-2ffee5bcf942)
+</details>
 
 ### Usage
 Make a virtual environment and install requirements given in requirements.txt
